@@ -1,0 +1,24 @@
+from train import train_model
+from dash import Dash, dcc, html
+import plotly.graph_objs as go
+
+data, predictions = train_model()
+
+app = Dash(__name__)
+
+app.layout = html.Div([
+    html.H2("Stock Price Prediction Dashboard"),
+
+    dcc.Graph(
+        figure={
+            "data": [
+                go.Scatter(y=data['Close'], name="Actual"),
+                go.Scatter(y=predictions.flatten(), name="Predicted")
+            ],
+            "layout": go.Layout(title="LSTM Based Stock Prediction")
+        }
+    )
+])
+
+if __name__ == "__main__":
+    app.run(debug=True)
